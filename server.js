@@ -31,7 +31,7 @@ router.post('/index',async function (ctx, next) {
        }).on('error', (err) => {
             resolve({
                 status: 500,
-                body: {success: err},
+                body: {success: false, errorMsg: err},
             });
         });//可读流通过管道写入可写流
     });
