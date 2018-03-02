@@ -4,10 +4,11 @@
   "description": "fun see requset",
   "main": "./src/fetch.js",
   "scripts": {
-    "dev": "webpack-dev-server --inline --open --mode development --module-bind js=babel-loader &",
-    "server": "nodemon server.js &",
+    "dev": "webpack-dev-server --inline --open --mode development --module-bind js=babel-loader",
+    "server": "nodemon server.js",
     "start": "npm run dev && npm run server",
-    "build": "webpack --mode production --module-bind js=babel-loader"
+    "build": "webpack --mode production --module-bind js=babel-loader",
+    "eslint": "eslint ./src/*.js *.js --fix"
   },
   "repository": {
     "type": "git",
