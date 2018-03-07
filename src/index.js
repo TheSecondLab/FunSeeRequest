@@ -5,6 +5,7 @@ async function doFetch(data) {
     url: 'http://localhost:3000/index',
     method: 'post',
     errorTips: true,
+    loading: true,
     body: data
   });
   console.log('result:', result);

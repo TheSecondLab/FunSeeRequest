@@ -1,12 +1,58 @@
 import fetch from 'isomorphic-fetch';
 
-const errorHandler = (res, options) => {
-  console.log('错误提示:', res);
+// 配置对象
+const config = {};
 
-  if (res && res.status === 403 && options.needLogin) {
-    // TODO login
-    console.log('need login');
-  }
+// 缓存配置
+config.list = [{
+  /**
+   * 配置id
+   */
+  id: 'defaults',
+  /**
+   * http start
+   */
+  showLoading: () => console.log('showLoading'),
+  /**
+   * http end
+   */
+  hideLoading: () => console.log('hideLoading'),
+  /**
+   * @param data 接受的http的response和catch到的error
+   * @param options http requset参数
+   */
+  errorHandler(data, options) {
+    this.toast && this.toast();
+    console.log('错误提示:', data);
+    if (data && data.status === 403 && options.needLogin) {
+      // TODO login
+    }
+  },
+  /**
+   * 弹出错误提示
+   */
+  toast: () => console.log('toast')
+}];
+
+// 现在的配置
+config.currentConfig = config.list[0];
+
+// 添加配置
+config.add = (options) => {
+  if (options.id) throw new Error('requset config need key: id!');
+  options = Object.assign({}, config.defaults, options);
+  config.list.push(options);
+};
+
+// 更换换配置
+config.change = (id) => {
+  config.list.some((item) => {
+    if (item.id === id) {
+      config.currentConfig = item;
+      return true;
+    }
+    return false;
+  });
 };
 
 /**
@@ -15,7 +61,7 @@ const errorHandler = (res, options) => {
  * loading 请求过程加loading动画
  * errorTips 自动处理错误
  * translateResponseBySelf 发送http请求，response自己处理
- * needLogin
+ * needLogin 是否需要登录
  * @param options {json}
  * @returns {Promise}
  */
@@ -26,7 +72,6 @@ const request = (options) => {
     credentials: 'include'
   };
   const _options = options;
-
   const ownVariableRegExp = /loading|errorTips|url|translateResponseBySelf|needLogin/;
   const ownVariable = {};
   const isWeb = typeof window === 'object';
@@ -63,7 +108,8 @@ const request = (options) => {
   }
 
   // TODO http start
-  console.log('http start with request ---->', options);
+  ownVariable.loading && config.currentConfig.showLoading();
+  console.log('http start with request ---->', ownVariable.url, options);
 
   const sentPromise = fetch(ownVariable.url, options);
 
@@ -76,6 +122,7 @@ const request = (options) => {
     return sentPromise.then((res) => {
       // TODO http end
       console.log('http end with response ---->', res);
+      ownVariable.loading && config.currentConfig.hideLoading();
 
       const result = res.json();
       if (res && res.ok) {
@@ -86,11 +133,11 @@ const request = (options) => {
       // 排除运行res.json时的报错
       const newPromiseForParse = new Promise((resolve, reject) => {
         result.then((data) => {
-          errorHandler(data, _options);
+          config.currentConfig.errorHandler(data, _options);
           resolve(data);
         }, (error) => {
           // 运行res.json报错
-          console.log('response json parse error!!');
+          console.log('try json parse response error!!');
           reject(error);
         });
       });
@@ -98,8 +145,9 @@ const request = (options) => {
     }).catch((e) => {
       // TODO network block or js error
       console.log('http end with error ----->', e);
+      ownVariable.loading && config.currentConfig.hideLoading();
 
-      errorHandler(e, _options);
+      config.currentConfig.errorHandler(e, _options);
       return errorResult;
     });
   }
@@ -108,9 +156,12 @@ const request = (options) => {
   return sentPromise.then((res) => {
     // TODO http end
     console.log('http end with response ---->', res);
+    ownVariable.loading && config.currentConfig.hideLoading();
 
     return res.json();
   });
 };
+
+request.config = config;
 
 export default request;
