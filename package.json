@@ -1,7 +1,7 @@
 {
-  "name": "fsr",
-  "version": "1.0.1",
-  "description": "fun see requset",
+  "name": "funsee-request",
+  "version": "1.0.0",
+  "description": "funsee requset",
   "main": "./src/fetch.js",
   "scripts": {
     "dev": "webpack-dev-server --inline --open --mode development --module-bind js=babel-loader &",
