@@ -1,5 +1,5 @@
 {
-  "name": "fsr",
+  "name": "funsee-request",
   "version": "1.0.0",
   "description": "fun see requset",
   "main": "./src/fetch.js",
