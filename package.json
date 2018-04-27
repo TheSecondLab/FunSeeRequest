@@ -1,23 +1,11 @@
 {
   "name": "funsee-request",
-<<<<<<< HEAD
-  "version": "2.0.0",
+  "version": "1.0.0",
   "description": "request npm module for funsee",
   "main": "index.js",
   "scripts": {
     "build": "./node_modules/.bin/babel -s inline -d dist lib",
     "prepublish": "npm run build"
-=======
-  "version": "1.0.0",
-  "description": "funsee requset",
-  "main": "./src/fetch.js",
-  "scripts": {
-    "dev": "webpack-dev-server --inline --open --mode development --module-bind js=babel-loader &",
-    "server": "nodemon server.js &",
-    "start": "npm run dev && npm run server",
-    "build": "webpack --mode production --module-bind js=babel-loader",
-    "eslint": "eslint ./src/*.js *.js --fix"
->>>>>>> 47388eb1e49efca532dc7ba54e3cb21e0e09ed89
   },
   "repository": {
     "type": "git",
