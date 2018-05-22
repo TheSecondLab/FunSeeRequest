@@ -1,6 +1,6 @@
 {
   "name": "funsee-request",
-  "version": "1.1.0-rc.2",
+  "version": "1.1.0-rc.3",
   "description": "request npm module for funsee",
   "main": "index.js",
   "scripts": {
