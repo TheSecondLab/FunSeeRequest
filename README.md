@@ -66,4 +66,4 @@ request的简便版GET请求， 只接受path, 其他option均为默认值
 ```
 request.post(path, body) => Promise
 ```
-request的简便版GET请求， 只接受path和请求体body, 其他option均为默认值
+request的简便版POST请求， 只接受path和请求体body, 其他option均为默认值
